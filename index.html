@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Industrial 6-Axis Robot Arm Simulation</title>
+  <title>Educational 6-Axis Industrial Robot Simulation</title>
   <link rel="stylesheet" href="style.css">
   
   <script type="importmap">
@@ -17,90 +17,136 @@
 </head>
 <body class="light-theme">
 
-  <!-- แผงควบคุมด้านซ้าย -->
-  <div id="dashboard">
-    <div class="header">
-      <h2>แผงควบคุมแขนกลอุตสาหกรรม</h2>
-      <p>ปรับตั้งองศาข้อต่อ J1 - J6 (สีส้มอุตสาหกรรม)</p>
+  <!-- แถบบาร์เมนูด้านบน (Top Navigation Bar) -->
+  <header id="top-bar">
+    <div class="brand">
+      <h1>🤖 6-AXIS ROBOT ARM SIMULATION</h1>
+      <span class="status-badge"><span class="pulse"></span> SYSTEM READY</span>
     </div>
-    
-    <!-- J1 -->
-    <div class="control-card">
-      <div class="control-header">
-        <label>J1 (Base Rotate)</label>
-        <div class="input-box-wrapper">
-          <input type="number" id="j1-num" min="-180" max="180" value="0">
-          <span class="unit">°</span>
+    <div class="camera-controls">
+      <span>มุมมองกล้อง:</span>
+      <button class="cam-btn" data-view="iso">Isometric</button>
+      <button class="cam-btn" data-view="top">Top</button>
+      <button class="cam-btn" data-view="front">Front</button>
+      <button class="cam-btn" data-view="side">Side</button>
+    </div>
+  </header>
+
+  <div id="main-container">
+    <!-- แผงควบคุมด้านซ้าย -->
+    <div id="dashboard">
+      
+      <!-- ส่วนที่ 1: ควบคุมข้อต่อ J1 - J6 -->
+      <div class="section-title">ตั้งค่าองศาข้อต่อ (Joint Angles)</div>
+      
+      <div class="control-card">
+        <div class="control-header">
+          <label>J1 (Base Rotate)</label>
+          <div class="input-box-wrapper">
+            <input type="number" id="j1-num" min="-180" max="180" value="0">
+            <span class="unit">°</span>
+          </div>
         </div>
+        <input type="range" id="j1" min="-180" max="180" value="0">
       </div>
-      <input type="range" id="j1" min="-180" max="180" value="0">
+
+      <div class="control-card">
+        <div class="control-header">
+          <label>J2 (Shoulder Pitch)</label>
+          <div class="input-box-wrapper">
+            <input type="number" id="j2-num" min="-180" max="180" value="0">
+            <span class="unit">°</span>
+          </div>
+        </div>
+        <input type="range" id="j2" min="-180" max="180" value="0">
+      </div>
+
+      <div class="control-card">
+        <div class="control-header">
+          <label>J3 (Elbow Pitch)</label>
+          <div class="input-box-wrapper">
+            <input type="number" id="j3-num" min="-180" max="180" value="0">
+            <span class="unit">°</span>
+          </div>
+        </div>
+        <input type="range" id="j3" min="-180" max="180" value="0">
+      </div>
+
+      <div class="control-card">
+        <div class="control-header">
+          <label>J4 (Forearm Roll)</label>
+          <div class="input-box-wrapper">
+            <input type="number" id="j4-num" min="-180" max="180" value="0">
+            <span class="unit">°</span>
+          </div>
+        </div>
+        <input type="range" id="j4" min="-180" max="180" value="0">
+      </div>
+
+      <div class="control-card">
+        <div class="control-header">
+          <label>J5 (Wrist Pitch)</label>
+          <div class="input-box-wrapper">
+            <input type="number" id="j5-num" min="-180" max="180" value="0">
+            <span class="unit">°</span>
+          </div>
+        </div>
+        <input type="range" id="j5" min="-180" max="180" value="0">
+      </div>
+
+      <div class="control-card">
+        <div class="control-header">
+          <label>J6 (Tool Roll)</label>
+          <div class="input-box-wrapper">
+            <input type="number" id="j6-num" min="-180" max="180" value="0">
+            <span class="unit">°</span>
+          </div>
+        </div>
+        <input type="range" id="j6" min="-180" max="180" value="0">
+      </div>
+
+      <!-- ส่วนที่ 2: ควบคุมมือจับ Gripper -->
+      <div class="section-title">ควบคุมมือจับ (Gripper)</div>
+      <div class="control-card">
+        <div class="control-header">
+          <label>การกางมือจับ (Gripper Open)</label>
+          <div class="input-box-wrapper">
+            <input type="number" id="gripper-num" min="0" max="100" value="0">
+            <span class="unit">%</span>
+          </div>
+        </div>
+        <input type="range" id="gripper" min="0" max="100" value="0">
+      </div>
+
+      <!-- ส่วนที่ 3: ปุ่มตั้งค่าท่าทางสำเร็จรูป -->
+      <div class="section-title">ท่าทางสำเร็จรูป (Preset Poses)</div>
+      <div class="preset-grid">
+        <button class="preset-btn" id="pose-home">🏠 Home (0°)</button>
+        <button class="preset-btn" id="pose-pick">📥 Pick Pose</button>
+        <button class="preset-btn" id="pose-place">📤 Place Pose</button>
+        <button class="preset-btn" id="pose-inspect">🔍 Inspect</button>
+      </div>
+
+      <!-- ส่วนที่ 4: โหมดสาธิตการทำงาน -->
+      <div class="section-title">การทำงานอัตโนมัติ</div>
+      <button id="demo-btn">▶ เล่นโหมดสาธิต (Auto Pick & Place)</button>
+      <button id="reset-btn">🔄 รีเซ็ตทั้งหมด (Reset All)</button>
+
     </div>
 
-    <!-- J2 -->
-    <div class="control-card">
-      <div class="control-header">
-        <label>J2 (Shoulder Pitch)</label>
-        <div class="input-box-wrapper">
-          <input type="number" id="j2-num" min="-180" max="180" value="0">
-          <span class="unit">°</span>
+    <!-- พื้นที่แสดงผล 3D ด้านขวา -->
+    <div id="canvas-container">
+      <!-- หน้าจอ HUD แสดงพิกัด Real-time -->
+      <div id="hud-panel">
+        <div class="hud-title">📍 พิกัดปลายแขนกล (End-Effector Kinematics)</div>
+        <div class="hud-grid">
+          <div class="hud-item"><span class="axis-label x">X:</span> <span id="pos-x">0.00</span> m</div>
+          <div class="hud-item"><span class="axis-label y">Y:</span> <span id="pos-y">0.00</span> m</div>
+          <div class="hud-item"><span class="axis-label z">Z:</span> <span id="pos-z">0.00</span> m</div>
         </div>
       </div>
-      <input type="range" id="j2" min="-180" max="180" value="0">
     </div>
-
-    <!-- J3 -->
-    <div class="control-card">
-      <div class="control-header">
-        <label>J3 (Elbow Pitch)</label>
-        <div class="input-box-wrapper">
-          <input type="number" id="j3-num" min="-180" max="180" value="0">
-          <span class="unit">°</span>
-        </div>
-      </div>
-      <input type="range" id="j3" min="-180" max="180" value="0">
-    </div>
-
-    <!-- J4 -->
-    <div class="control-card">
-      <div class="control-header">
-        <label>J4 (Forearm Roll)</label>
-        <div class="input-box-wrapper">
-          <input type="number" id="j4-num" min="-180" max="180" value="0">
-          <span class="unit">°</span>
-        </div>
-      </div>
-      <input type="range" id="j4" min="-180" max="180" value="0">
-    </div>
-
-    <!-- J5 -->
-    <div class="control-card">
-      <div class="control-header">
-        <label>J5 (Wrist Pitch)</label>
-        <div class="input-box-wrapper">
-          <input type="number" id="j5-num" min="-180" max="180" value="0">
-          <span class="unit">°</span>
-        </div>
-      </div>
-      <input type="range" id="j5" min="-180" max="180" value="0">
-    </div>
-
-    <!-- J6 -->
-    <div class="control-card">
-      <div class="control-header">
-        <label>J6 (Tool/Gripper Roll)</label>
-        <div class="input-box-wrapper">
-          <input type="number" id="j6-num" min="-180" max="180" value="0">
-          <span class="unit">°</span>
-        </div>
-      </div>
-      <input type="range" id="j6" min="-180" max="180" value="0">
-    </div>
-
-    <button id="reset-btn">รีเซ็ตตำแหน่ง (0° ทั้งหมด)</button>
   </div>
-
-  <!-- พื้นที่แสดงผล 3D ด้านขวา -->
-  <div id="canvas-container"></div>
 
   <script type="module" src="script.js"></script>
 </body>

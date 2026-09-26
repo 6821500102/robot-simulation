@@ -25,24 +25,24 @@ const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.2);
 dirLight1.position.set(5, 10, 7);
 scene.add(dirLight1);
 
-const dirLight2 = new THREE.DirectionalLight(0xfef08a, 0.3); // แสงอุ่นๆ สะท้อนแขนกล
+const dirLight2 = new THREE.DirectionalLight(0xfef08a, 0.3);
 dirLight2.position.set(-5, 5, -5);
 scene.add(dirLight2);
 
 const gridHelper = new THREE.GridHelper(10, 20, 0xd97706, 0xcbd5e1);
 scene.add(gridHelper);
 
-// 3. วัสดุสีแขนกลอุตสาหกรรม (Industrial Orange & Metallic Steel)
+// 3. วัสดุสีโมเดล
 const matOrange = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.4, roughness: 0.3 });
 const matDarkSteel = new THREE.MeshStandardMaterial({ color: 0x262626, metalness: 0.8, roughness: 0.2 });
 const matSilver = new THREE.MeshStandardMaterial({ color: 0xd1d5db, metalness: 0.9, roughness: 0.1 });
 const matBlack = new THREE.MeshStandardMaterial({ color: 0x111827, metalness: 0.5, roughness: 0.4 });
 
-// 4. โครงสร้างแขนกลอุตสาหกรรม 6 แกน (Industrial Orange Arm)
+// 4. ประกอบโมเดลแขนกล 6 แกน
 const robot = new THREE.Group();
 scene.add(robot);
 
-// --- BASE (ฐานโลหะทรงกลมลดระดับพร้อมหมุดน็อต) ---
+// Base ฐานโลหะ
 const baseGroup = new THREE.Group();
 robot.add(baseGroup);
 
@@ -54,11 +54,6 @@ const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.5, 0.1, 32), matDar
 b2.position.y = 0.15;
 baseGroup.add(b2);
 
-const b3 = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.42, 0.08, 32), matDarkSteel);
-b3.position.y = 0.24;
-baseGroup.add(b3);
-
-// หมุดน็อตรอบฐาน
 for (let i = 0; i < 12; i++) {
   const angle = (i / 12) * Math.PI * 2;
   const bolt = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 8), matSilver);
@@ -66,35 +61,29 @@ for (let i = 0; i < 12; i++) {
   baseGroup.add(bolt);
 }
 
-// --- JOINT 1 (J1: Base Rotate - หมุนแกน Y) ---
+// Joint 1 (J1: Base Yaw)
 const j1Group = new THREE.Group();
-j1Group.position.y = 0.28;
+j1Group.position.y = 0.2;
 robot.add(j1Group);
 
 const j1Housing = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.35, 0.2, 32), matOrange);
 j1Housing.position.y = 0.1;
 j1Group.add(j1Housing);
 
-// --- JOINT 2 (J2: Shoulder Pitch - หมุนก้มเงยไหล่ แกน Z) ---
+// Joint 2 (J2: Shoulder Pitch)
 const j2Group = new THREE.Group();
 j2Group.position.y = 0.2;
 j1Group.add(j2Group);
 
-// จานปิดด้านข้างข้อต่อ J2
-const j2Cap = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.36, 32), matOrange);
+const j2Cap = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.36, 32), matOrange);
 j2Cap.rotation.x = Math.PI / 2;
 j2Group.add(j2Cap);
 
-const j2Inner = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.37, 32), matDarkSteel);
-j2Inner.rotation.x = Math.PI / 2;
-j2Group.add(j2Inner);
-
-// ท่อนแขนล่าง (Lower Arm Link)
-const link1 = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.22, 0.9, 32), matOrange);
+const link1 = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.2, 0.9, 32), matOrange);
 link1.position.set(0, 0.45, 0);
 j2Group.add(link1);
 
-// --- JOINT 3 (J3: Elbow Pitch - หมุนศอก แกน Z) ---
+// Joint 3 (J3: Elbow Pitch)
 const j3Group = new THREE.Group();
 j3Group.position.set(0, 0.9, 0);
 j2Group.add(j3Group);
@@ -103,7 +92,7 @@ const j3Cap = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.3, 32), ma
 j3Cap.rotation.x = Math.PI / 2;
 j3Group.add(j3Cap);
 
-// --- JOINT 4 (J4: Forearm Roll - หมุนควงท่อนแขน แกน Y) ---
+// Joint 4 (J4: Forearm Roll)
 const j4Group = new THREE.Group();
 j4Group.position.set(0, 0, 0);
 j3Group.add(j4Group);
@@ -112,7 +101,7 @@ const link2 = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.7, 32), ma
 link2.position.set(0, 0.35, 0);
 j4Group.add(link2);
 
-// --- JOINT 5 (J5: Wrist Pitch - ก้มเงยข้อมือ แกน Z) ---
+// Joint 5 (J5: Wrist Pitch)
 const j5Group = new THREE.Group();
 j5Group.position.set(0, 0.7, 0);
 j4Group.add(j5Group);
@@ -121,12 +110,11 @@ const j5Cap = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.22, 32), m
 j5Cap.rotation.x = Math.PI / 2;
 j5Group.add(j5Cap);
 
-// --- JOINT 6 & GRIPPER (J6: Tool Roll & Mechanical Claw) ---
+// Joint 6 & Gripper
 const j6Group = new THREE.Group();
 j6Group.position.set(0, 0, 0);
 j5Group.add(j6Group);
 
-// ฐานหัวจับ Gripper
 const gripperBase = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.1, 32), matBlack);
 gripperBase.position.y = 0.1;
 j6Group.add(gripperBase);
@@ -135,90 +123,150 @@ const gripperBody = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.08, 0.12), matD
 gripperBody.position.y = 0.17;
 j6Group.add(gripperBody);
 
-// กระบอกสูบขับเคลื่อนเขี้ยว
-const cyl1 = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.12, 16), matSilver);
-cyl1.position.set(-0.06, 0.24, 0);
-j6Group.add(cyl1);
-
-const cyl2 = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.12, 16), matSilver);
-cyl2.position.set(0.06, 0.24, 0);
-j6Group.add(cyl2);
-
-// เขี้ยวจับด้านซ้าย (Left Finger)
+// เขี้ยวจับ Gripper Left & Right
 const fingerL = new THREE.Group();
-fingerL.position.set(-0.07, 0.28, 0);
+fingerL.position.set(-0.05, 0.25, 0);
 j6Group.add(fingerL);
 
-const fL1 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.1, 0.03), matSilver);
-fL1.rotation.z = -0.3;
-fingerL.add(fL1);
+const fL = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.12, 0.03), matSilver);
+fingerL.add(fL);
 
-const fL2 = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.08, 0.025), matBlack);
-fL2.position.set(0.02, 0.08, 0);
-fL2.rotation.z = 0.4;
-fingerL.add(fL2);
-
-// เขี้ยวจับด้านขวา (Right Finger)
 const fingerR = new THREE.Group();
-fingerR.position.set(0.07, 0.28, 0);
+fingerR.position.set(0.05, 0.25, 0);
 j6Group.add(fingerR);
 
-const fR1 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.1, 0.03), matSilver);
-fR1.rotation.z = 0.3;
-fingerR.add(fR1);
+const fR = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.12, 0.03), matSilver);
+fingerR.add(fR);
 
-const fR2 = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.08, 0.025), matBlack);
-fR2.position.set(-0.02, 0.08, 0);
-fR2.rotation.z = -0.4;
-fingerR.add(fR2);
+// จุดวัดพิกัด TCP (Tool Center Point)
+const tcpPoint = new THREE.Object3D();
+tcpPoint.position.set(0, 0.32, 0);
+j6Group.add(tcpPoint);
 
-// 5. ระบบเชื่อมโยงข้อมูลป้อนเข้า (Bi-directional Binding)
+// 5. ระบบผูกค่าและควบคุมการเคลื่อนที่
 const joints = ['j1', 'j2', 'j3', 'j4', 'j5', 'j6'];
+let targetAngles = { j1:0, j2:0, j3:0, j4:0, j5:0, j6:0, gripper:0 };
+let currentAngles = { j1:0, j2:0, j3:0, j4:0, j5:0, j6:0, gripper:0 };
 
-function updateRobot() {
-  const deg1 = parseFloat(document.getElementById('j1').value) || 0;
-  const deg2 = parseFloat(document.getElementById('j2').value) || 0;
-  const deg3 = parseFloat(document.getElementById('j3').value) || 0;
-  const deg4 = parseFloat(document.getElementById('j4').value) || 0;
-  const deg5 = parseFloat(document.getElementById('j5').value) || 0;
-  const deg6 = parseFloat(document.getElementById('j6').value) || 0;
+function updateRobotPhysics() {
+  // Lerp การเคลื่อนที่ให้นุ่มนวล
+  joints.forEach(id => {
+    currentAngles[id] += (targetAngles[id] - currentAngles[id]) * 0.15;
+  });
+  currentAngles.gripper += (targetAngles.gripper - currentAngles.gripper) * 0.15;
 
-  j1Group.rotation.y = THREE.MathUtils.degToRad(deg1);
-  j2Group.rotation.z = THREE.MathUtils.degToRad(deg2);
-  j3Group.rotation.z = THREE.MathUtils.degToRad(deg3);
-  j4Group.rotation.y = THREE.MathUtils.degToRad(deg4);
-  j5Group.rotation.z = THREE.MathUtils.degToRad(deg5);
-  j6Group.rotation.y = THREE.MathUtils.degToRad(deg6);
+  // หมุนข้อต่อ 3D
+  j1Group.rotation.y = THREE.MathUtils.degToRad(currentAngles.j1);
+  j2Group.rotation.z = THREE.MathUtils.degToRad(currentAngles.j2);
+  j3Group.rotation.z = THREE.MathUtils.degToRad(currentAngles.j3);
+  j4Group.rotation.y = THREE.MathUtils.degToRad(currentAngles.j4);
+  j5Group.rotation.z = THREE.MathUtils.degToRad(currentAngles.j5);
+  j6Group.rotation.y = THREE.MathUtils.degToRad(currentAngles.j6);
+
+  // ขยับกางเขี้ยว Gripper
+  const gOffset = (currentAngles.gripper / 100) * 0.05;
+  fingerL.position.x = -0.05 - gOffset;
+  fingerR.position.x = 0.05 + gOffset;
+
+  // คำนวณพิกัด X, Y, Z บน HUD Real-time
+  const worldPos = new THREE.Vector3();
+  tcpPoint.getWorldPosition(worldPos);
+  document.getElementById('pos-x').textContent = worldPos.x.toFixed(2);
+  document.getElementById('pos-y').textContent = worldPos.y.toFixed(2);
+  document.getElementById('pos-z').textContent = worldPos.z.toFixed(2);
 }
 
+// ผูก Event ให้สไลเดอร์และช่องกรอกตัวเลข
 joints.forEach(id => {
   const range = document.getElementById(id);
   const number = document.getElementById(`${id}-num`);
 
-  // เลื่อนสไลเดอร์ -> ช่องตัวเลขเปลี่ยน
   range.addEventListener('input', () => {
     number.value = range.value;
-    updateRobot();
+    targetAngles[id] = parseFloat(range.value);
   });
 
-  // พิมพ์ตัวเลข -> สไลเดอร์เปลี่ยน + หมุนโมเดลสด
   number.addEventListener('input', () => {
-    let val = parseFloat(number.value);
-    if (isNaN(val)) val = 0;
-    if (val > 180) val = 180;
-    if (val < -180) val = -180;
+    let val = parseFloat(number.value) || 0;
+    val = Math.max(-180, Math.min(180, val));
     range.value = val;
-    updateRobot();
+    targetAngles[id] = val;
   });
 });
 
-// ปุ่มรีเซ็ต
-document.getElementById('reset-btn').addEventListener('click', () => {
+// Gripper Control
+const gRange = document.getElementById('gripper');
+const gNumber = document.getElementById('gripper-num');
+gRange.addEventListener('input', () => {
+  gNumber.value = gRange.value;
+  targetAngles.gripper = parseFloat(gRange.value);
+});
+gNumber.addEventListener('input', () => {
+  let val = parseFloat(gNumber.value) || 0;
+  val = Math.max(0, Math.min(100, val));
+  gRange.value = val;
+  targetAngles.gripper = val;
+});
+
+// 6. ฟังก์ชัน Preset Poses
+function setPose(j1, j2, j3, j4, j5, j6, g = 0) {
+  const pose = { j1, j2, j3, j4, j5, j6 };
   joints.forEach(id => {
-    document.getElementById(id).value = 0;
-    document.getElementById(`${id}-num`).value = 0;
+    targetAngles[id] = pose[id];
+    document.getElementById(id).value = pose[id];
+    document.getElementById(`${id}-num`).value = pose[id];
   });
-  updateRobot();
+  targetAngles.gripper = g;
+  gRange.value = g;
+  gNumber.value = g;
+}
+
+document.getElementById('pose-home').addEventListener('click', () => setPose(0, 0, 0, 0, 0, 0, 0));
+document.getElementById('pose-pick').addEventListener('click', () => setPose(35, -45, 60, 0, -15, 0, 80));
+document.getElementById('pose-place').addEventListener('click', () => setPose(-60, -30, 45, 0, -15, 90, 0));
+document.getElementById('pose-inspect').addEventListener('click', () => setPose(0, -20, -30, 90, 45, 45, 20));
+
+// ปุ่ม Reset
+document.getElementById('reset-btn').addEventListener('click', () => setPose(0, 0, 0, 0, 0, 0, 0));
+
+// 7. โหมด Auto Motion Sequence สาธิต
+let isDemoRunning = false;
+document.getElementById('demo-btn').addEventListener('click', () => {
+  if (isDemoRunning) return;
+  isDemoRunning = true;
+  document.getElementById('demo-btn').textContent = '⏳ กำลังทำงาน...';
+
+  const steps = [
+    () => setPose(0, 0, 0, 0, 0, 0, 0),
+    () => setPose(45, -40, 55, 0, -15, 0, 100), // เอื้อมจับ
+    () => setPose(45, -40, 55, 0, -15, 0, 0),   // หนีบ
+    () => setPose(45, 0, 20, 0, 0, 0, 0),      // ยกขึ้น
+    () => setPose(-50, -30, 40, 0, -10, 90, 0), // หมุนไปวาง
+    () => setPose(-50, -30, 40, 0, -10, 90, 100),// ปล่อย
+    () => setPose(0, 0, 0, 0, 0, 0, 0)          // กลับ Home
+  ];
+
+  steps.forEach((step, index) => {
+    setTimeout(() => {
+      step();
+      if (index === steps.length - 1) {
+        isDemoRunning = false;
+        document.getElementById('demo-btn').textContent = '▶ เล่นโหมดสาธิต (Auto Pick & Place)';
+      }
+    }, index * 1800);
+  });
+});
+
+// 8. ปุ่มสลับมุมมองกล้อง
+document.querySelectorAll('.cam-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const view = e.target.dataset.view;
+    if (view === 'iso') camera.position.set(3.2, 2.5, 3.2);
+    if (view === 'top') camera.position.set(0, 4.5, 0.01);
+    if (view === 'front') camera.position.set(0, 1.5, 4);
+    if (view === 'side') camera.position.set(4, 1.5, 0);
+    controls.target.set(0, 0.8, 0);
+  });
 });
 
 window.addEventListener('resize', () => {
@@ -229,6 +277,7 @@ window.addEventListener('resize', () => {
 
 function animate() {
   requestAnimationFrame(animate);
+  updateRobotPhysics();
   controls.update();
   renderer.render(scene, camera);
 }

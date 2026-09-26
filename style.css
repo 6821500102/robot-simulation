@@ -7,48 +7,124 @@
 
 body.light-theme {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   background-color: #f8fafc;
   color: #1e293b;
   overflow: hidden;
 }
 
+/* แถบเมนูด้านบน Top Bar */
+#top-bar {
+  height: 52px;
+  background: #0f172a;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 3px solid #d97706;
+  z-index: 20;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand h1 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.status-badge {
+  background: #1e293b;
+  border: 1px solid #10b981;
+  color: #10b981;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pulse {
+  width: 6px;
+  height: 6px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.camera-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.cam-btn {
+  background: #334155;
+  color: #f8fafc;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cam-btn:hover {
+  background: #d97706;
+}
+
+/* Layout หลัก */
+#main-container {
+  display: flex;
+  flex-grow: 1;
+  height: calc(100vh - 52px);
+  position: relative;
+}
+
 /* แผงควบคุมด้านซ้าย */
 #dashboard {
-  width: 350px;
-  max-height: 100vh;
+  width: 360px;
+  height: 100%;
   overflow-y: auto;
   background: #ffffff;
-  padding: 20px 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
   border-right: 1px solid #e2e8f0;
   z-index: 10;
 }
 
-.header h2 {
-  font-size: 17px;
-  color: #0f172a;
-  font-weight: 700;
-}
-
-.header p {
+.section-title {
   font-size: 12px;
+  font-weight: 700;
   color: #64748b;
-  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
 }
 
-/* การ์ดควบคุมข้อต่อ */
 .control-card {
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .control-header {
@@ -58,28 +134,27 @@ body.light-theme {
 }
 
 .control-header label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: #334155;
 }
 
-/* ช่องกรอกตัวเลข */
 .input-box-wrapper {
   display: flex;
   align-items: center;
   gap: 2px;
   background: #ffffff;
-  border: 2px solid #d97706; /* สีส้มตามตัวแขนกล */
-  border-radius: 6px;
-  padding: 2px 6px;
+  border: 2px solid #d97706;
+  border-radius: 5px;
+  padding: 1px 5px;
 }
 
 .input-box-wrapper input[type="number"] {
-  width: 58px;
-  height: 26px;
+  width: 50px;
+  height: 22px;
   border: none;
   outline: none;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   color: #d97706;
   text-align: right;
@@ -87,7 +162,7 @@ body.light-theme {
 }
 
 .unit {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   color: #d97706;
 }
@@ -96,27 +171,106 @@ input[type=range] {
   width: 100%;
   accent-color: #d97706;
   cursor: pointer;
-  height: 5px;
+  height: 4px;
 }
 
-button#reset-btn {
-  margin-top: 6px;
-  padding: 12px;
-  background: #d97706;
+/* Preset Buttons Grid */
+.preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.preset-btn {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.preset-btn:hover {
+  background: #e2e8f0;
+  border-color: #d97706;
+  color: #d97706;
+}
+
+button#demo-btn {
+  padding: 10px;
+  background: #10b981;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   transition: background 0.2s;
 }
 
-button#reset-btn:hover {
-  background: #b45309;
+button#demo-btn:hover {
+  background: #059669;
 }
 
+button#reset-btn {
+  padding: 10px;
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+button#reset-btn:hover {
+  background: #dc2626;
+}
+
+/* พื้นที่ 3D & HUD Overlay */
 #canvas-container {
   flex-grow: 1;
   height: 100%;
+  position: relative;
 }
+
+#hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 15;
+  pointer-events: none;
+}
+
+.hud-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.hud-grid {
+  display: flex;
+  gap: 16px;
+}
+
+.hud-item {
+  font-size: 14px;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.axis-label.x { color: #ef4444; }
+.axis-label.y { color: #10b981; }
+.axis-label.z { color: #3b82f6; }
