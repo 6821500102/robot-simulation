@@ -14,7 +14,33 @@ body.light-theme {
   overflow: hidden;
 }
 
-/* แถบเมนูด้านบน Top Bar */
+/* แถบแจ้งเตือน Warning Banner */
+#warning-banner {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ef4444;
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+  z-index: 100;
+  transition: all 0.3s ease;
+  animation: pulse-warn 1s infinite alternate;
+}
+
+#warning-banner.hidden {
+  display: none;
+}
+
+@keyframes pulse-warn {
+  0% { transform: translateX(-50%) scale(1); }
+  100% { transform: translateX(-50%) scale(1.03); }
+}
+
 #top-bar {
   height: 52px;
   background: #0f172a;
@@ -23,7 +49,7 @@ body.light-theme {
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  border-bottom: 3px solid #d97706;
+  border-bottom: 3px solid #3b82f6;
   z-index: 20;
 }
 
@@ -50,6 +76,11 @@ body.light-theme {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.status-badge.error {
+  border-color: #ef4444;
+  color: #ef4444;
 }
 
 .pulse {
@@ -79,11 +110,8 @@ body.light-theme {
   transition: all 0.2s;
 }
 
-.cam-btn:hover {
-  background: #d97706;
-}
+.cam-btn:hover { background: #2563eb; }
 
-/* Layout หลัก */
 #main-container {
   display: flex;
   flex-grow: 1;
@@ -91,9 +119,8 @@ body.light-theme {
   position: relative;
 }
 
-/* แผงควบคุมด้านซ้าย */
 #dashboard {
-  width: 360px;
+  width: 380px;
   height: 100%;
   overflow-y: auto;
   background: #ffffff;
@@ -118,14 +145,24 @@ body.light-theme {
 }
 
 .control-card {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 8px 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  border-left: 4px solid #cbd5e1;
+  background: #f8fafc;
+  transition: all 0.2s;
 }
+
+.control-card.error-card {
+  border-left-color: #ef4444 !important;
+  background: #fef2f2 !important;
+}
+
+.link1-card { border-left-color: #e07a38; background: #fff7ed; }
+.link2-card { border-left-color: #22c55e; background: #f0fdf4; }
+.link3-card { border-left-color: #a855f7; background: #faf5ff; }
 
 .control-header {
   display: flex;
@@ -134,7 +171,7 @@ body.light-theme {
 }
 
 .control-header label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: #334155;
 }
@@ -144,76 +181,83 @@ body.light-theme {
   align-items: center;
   gap: 2px;
   background: #ffffff;
-  border: 2px solid #d97706;
+  border: 1px solid #cbd5e1;
   border-radius: 5px;
   padding: 1px 5px;
 }
 
 .input-box-wrapper input[type="number"] {
-  width: 50px;
-  height: 22px;
+  width: 48px;
+  height: 20px;
   border: none;
   outline: none;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  color: #d97706;
+  color: #1e293b;
   text-align: right;
-  background: transparent;
 }
 
-.unit {
-  font-size: 12px;
-  font-weight: bold;
-  color: #d97706;
-}
+.unit { font-size: 11px; color: #64748b; }
 
 input[type=range] {
   width: 100%;
-  accent-color: #d97706;
+  accent-color: #2563eb;
   cursor: pointer;
   height: 4px;
 }
 
-/* Preset Buttons Grid */
-.preset-grid {
+/* ปุ่ม Teach Mode (Set & Play) */
+.teach-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
-.preset-btn {
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  color: #334155;
-  padding: 8px;
+.action-btn {
+  padding: 10px;
+  border: none;
   border-radius: 6px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.preset-btn:hover {
-  background: #e2e8f0;
-  border-color: #d97706;
-  color: #d97706;
-}
-
-button#demo-btn {
-  padding: 10px;
+.set-btn {
   background: #10b981;
   color: #ffffff;
-  border: none;
-  border-radius: 6px;
+}
+.set-btn:hover { background: #059669; }
+
+.play-btn {
+  background: #2563eb;
+  color: #ffffff;
+}
+.play-btn:hover { background: #1d4ed8; }
+
+.clear-btn {
+  padding: 6px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  border-radius: 4px;
+  font-size: 11px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-  transition: background 0.2s;
+}
+.clear-btn:hover { background: #e2e8f0; color: #ef4444; }
+
+#waypoint-list-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
+  max-height: 120px;
+  overflow-y: auto;
 }
 
-button#demo-btn:hover {
-  background: #059669;
-}
+.list-header { font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 4px; }
+#waypoint-list { padding-left: 18px; font-size: 11px; color: #334155; }
+#waypoint-list li { margin-bottom: 2px; }
 
 button#reset-btn {
   padding: 10px;
@@ -222,15 +266,11 @@ button#reset-btn {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
 }
 
-button#reset-btn:hover {
-  background: #dc2626;
-}
-
-/* พื้นที่ 3D & HUD Overlay */
+/* HUD Matrix Table */
 #canvas-container {
   flex-grow: 1;
   height: 100%;
@@ -241,36 +281,54 @@ button#reset-btn:hover {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.88);
   backdrop-filter: blur(8px);
   color: #ffffff;
   padding: 12px 16px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   z-index: 15;
-  pointer-events: none;
+  min-width: 320px;
 }
 
 .hud-title {
   font-size: 11px;
   font-weight: bold;
   color: #94a3b8;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   letter-spacing: 0.5px;
 }
 
-.hud-grid {
+.hud-matrix {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.hud-item {
-  font-size: 14px;
+.hud-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
   font-family: monospace;
-  font-weight: bold;
+  font-size: 12px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.axis-label.x { color: #ef4444; }
-.axis-label.y { color: #10b981; }
-.axis-label.z { color: #3b82f6; }
+.hud-row.header {
+  font-weight: bold;
+  color: #64748b;
+  font-size: 10px;
+}
+
+.j-name { font-weight: bold; color: #cbd5e1; }
+.link1-txt { color: #f97316; }
+.link2-txt { color: #22c55e; }
+.link3-txt { color: #c084fc; }
+.tool-txt { color: #38bdf8; }
+
+.hud-row.active-tool {
+  background: rgba(56, 189, 248, 0.1);
+  border-radius: 4px;
+  padding-left: 2px;
+}
